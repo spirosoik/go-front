@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/spirosoik/go-front/front/serializer"
+	"github.com/spirosoik/go-front/serializer"
 )
 
 const (

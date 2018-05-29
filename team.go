@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/spirosoik/go-front/front/serializer"
+	"github.com/spirosoik/go-front/serializer"
 )
 
 //TeamService Http client
