@@ -28,12 +28,33 @@ The rest endpoints are coming soon!!! Stay tuned
 # Installation
 
 ```
-go get -v github.com/spirosoik/go-front/front
+go get -v github.com/spirosoik/go-front
 ```
 
 # Example
 
-Check the [examples](./examples)
+```
+import (
+	"fmt"
+
+	"github.com/spirosoik/go-front/front"
+)
+
+func main() {
+	cfg := front.Config{
+		APIToken: "test_token",
+		BaseURL:  "https://api2.frontapp.com",
+	}
+
+	c, err := front.New(&cfg)
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	data, err := c.Inbox.List()
+	fmt.Print(data.Results)
+}
+```
 
 # License
 
