@@ -1,0 +1,47 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.10
+      
+    working_directory: /go/src/github.com/spirosoik/go-front
+    
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - vendor-cache-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+            - vendor-cache-{{ .Branch }}
+            - vendor-cache
+
+      - run:
+          name: Install
+          command: |
+            go get github.com/mattn/goveralls
+            go get -u golang.org/x/lint/golint
+            dep ensure -vendor-only
+
+      - save_cache:
+          key: vendor-cache-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+          paths:
+            - vendor
+      - save_cache:
+          key: vendor-cache-{{ .Branch }}
+          paths:
+            - vendor
+      - save_cache:
+          key: vendor-cache
+          paths:
+            - vendor
+
+      - run:
+          name: Lint
+          command: golint .
+      
+      - run:
+          name: Run tests
+          command: go test -v -cover -race -coverprofile=coverage.out ./...
+      
+      - run: 
+          name: Coverage
+          command: $GOPATH/bin/goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN

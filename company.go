@@ -2,8 +2,6 @@ package front
 
 import (
 	"net/http"
-
-	"github.com/spirosoik/go-front/serializer"
 )
 
 //CompanyService Http client
@@ -25,16 +23,11 @@ func (s *CompanyService) Me() (*Company, error) {
 		return nil, err
 	}
 
-	resp, err := s.gateway.client.Do(req)
+	var c *Company
+
+	_, err = s.gateway.call(req, &c)
 	if err != nil {
 		return nil, err
 	}
-	var c *Company
-	deserialize := serializer.Decode(&c)
-
-	if err := deserialize(resp); err != nil {
-		return c, err
-	}
-
 	return c, nil
 }

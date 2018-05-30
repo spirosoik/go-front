@@ -3,8 +3,6 @@ package front
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/spirosoik/go-front/serializer"
 )
 
 //TeamService Http client
@@ -31,19 +29,13 @@ func (s *TeamService) List() (*TeamList, error) {
 	if err != nil {
 		return nil, err
 	}
+	var t *TeamList
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &t)
 	if err != nil {
 		return nil, err
 	}
-	var c *TeamList
-	deserialize := serializer.Decode(&c)
-
-	if err := deserialize(resp); err != nil {
-		return c, err
-	}
-
-	return c, nil
+	return t, nil
 }
 
 //Get by ID the requested team
@@ -54,17 +46,11 @@ func (s *TeamService) Get(id string) (*Team, error) {
 	if err != nil {
 		return nil, err
 	}
+	var t *Team
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &t)
 	if err != nil {
 		return nil, err
 	}
-	var c *Team
-	deserialize := serializer.Decode(&c)
-
-	if err := deserialize(resp); err != nil {
-		return c, err
-	}
-
-	return c, nil
+	return t, nil
 }

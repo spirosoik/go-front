@@ -1,3 +1,7 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/spirosoik/go-front)](https://goreportcard.com/report/github.com/spirosoik/go-front)
+[![Coverage Status](https://coveralls.io/repos/github/spirosoik/go-front/badge.svg?branch=master)](https://coveralls.io/github/spirosoik/go-front?branch=master)
+[![CircleCI](https://circleci.com/gh/spirosoik/go-front.svg?style=svg)](https://circleci.com/gh/spirosoik/go-front)
+
 # Golang Front API
 
 This is an implementation in Go for [Front API](https://dev.frontapp.com/)
@@ -33,28 +37,7 @@ go get -v github.com/spirosoik/go-front
 
 # Example
 
-```
-import (
-	"fmt"
-
-	"github.com/spirosoik/go-front/front"
-)
-
-func main() {
-	cfg := front.Config{
-		APIToken: "test_token",
-		BaseURL:  "https://api2.frontapp.com",
-	}
-
-	c, err := front.New(&cfg)
-	if err != nil {
-		fmt.Print(err)
-	}
-
-	data, err := c.Inbox.List()
-	fmt.Print(data.Results)
-}
-```
+Check the [examples](./_examples)
 
 # License
 

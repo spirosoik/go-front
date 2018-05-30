@@ -3,8 +3,6 @@ package front
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/spirosoik/go-front/serializer"
 )
 
 //TeammateService Http client
@@ -45,19 +43,13 @@ func (s *TeammateService) List() (*TeammateList, error) {
 	if err != nil {
 		return nil, err
 	}
+	var t *TeammateList
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &t)
 	if err != nil {
 		return nil, err
 	}
-	var c *TeammateList
-	deserialize := serializer.Decode(&c)
-
-	if err := deserialize(resp); err != nil {
-		return c, err
-	}
-
-	return c, nil
+	return t, nil
 }
 
 //Get by ID the requested teammate
@@ -68,19 +60,13 @@ func (s *TeammateService) Get(id string) (*Teammate, error) {
 	if err != nil {
 		return nil, err
 	}
+	var t *Teammate
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &t)
 	if err != nil {
 		return nil, err
 	}
-	var c *Teammate
-	deserialize := serializer.Decode(&c)
-
-	if err := deserialize(resp); err != nil {
-		return c, err
-	}
-
-	return c, nil
+	return t, nil
 }
 
 //Update the teammate with the requested ID
@@ -92,7 +78,7 @@ func (s *TeammateService) Update(id string, p *TeammateUpdatePayload) error {
 		return err
 	}
 
-	_, err = s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, nil)
 	if err != nil {
 		return err
 	}
@@ -108,18 +94,12 @@ func (s *TeammateService) Conversations(id string) (*ConversationList, error) {
 	if err != nil {
 		return nil, err
 	}
+	var c *ConversationList
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &c)
 	if err != nil {
 		return nil, err
 	}
-	var c *ConversationList
-	deserialize := serializer.Decode(&c)
-
-	if err := deserialize(resp); err != nil {
-		return c, err
-	}
-
 	return c, nil
 }
 
@@ -131,17 +111,11 @@ func (s *TeammateService) Inboxes(id string) (*InboxList, error) {
 	if err != nil {
 		return nil, err
 	}
+	var i *InboxList
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &i)
 	if err != nil {
 		return nil, err
 	}
-	var c *InboxList
-	deserialize := serializer.Decode(&c)
-
-	if err := deserialize(resp); err != nil {
-		return c, err
-	}
-
-	return c, nil
+	return i, nil
 }

@@ -3,8 +3,6 @@ package front
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/spirosoik/go-front/serializer"
 )
 
 //InboxService Http client
@@ -37,16 +35,11 @@ func (s *InboxService) List() (*InboxList, error) {
 	if err != nil {
 		return nil, err
 	}
+	var i *InboxList
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &i)
 	if err != nil {
 		return nil, err
-	}
-	var i *InboxList
-	deserialize := serializer.Decode(&i)
-
-	if err := deserialize(resp); err != nil {
-		return i, err
 	}
 	return i, nil
 }
@@ -60,19 +53,13 @@ func (s *InboxService) Get(id string) (*Inbox, error) {
 	if err != nil {
 		return nil, err
 	}
+	var i *Inbox
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &i)
 	if err != nil {
 		return nil, err
 	}
-
-	var c *Inbox
-	deserialize := serializer.Decode(&c)
-
-	if err := deserialize(resp); err != nil {
-		return c, err
-	}
-	return c, nil
+	return i, nil
 }
 
 //Create an inbox of the api
@@ -84,7 +71,7 @@ func (s *InboxService) Create(p *InboxCreatePayload) error {
 		return err
 	}
 
-	_, err = s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, nil)
 	if err != nil {
 		return err
 	}
@@ -99,18 +86,13 @@ func (s *InboxService) Channels(inboxID string) (*ChannelList, error) {
 	if err != nil {
 		return nil, err
 	}
+	var chnl *ChannelList
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &chnl)
 	if err != nil {
 		return nil, err
 	}
-	var i *ChannelList
-	deserialize := serializer.Decode(&i)
-
-	if err := deserialize(resp); err != nil {
-		return i, err
-	}
-	return i, nil
+	return chnl, nil
 }
 
 //Conversations which are assigned to the provided Inbox id
@@ -121,18 +103,13 @@ func (s *InboxService) Conversations(inboxID string) (*ConversationList, error) 
 	if err != nil {
 		return nil, err
 	}
+	var c *ConversationList
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &c)
 	if err != nil {
 		return nil, err
 	}
-	var i *ConversationList
-	deserialize := serializer.Decode(&i)
-
-	if err := deserialize(resp); err != nil {
-		return i, err
-	}
-	return i, nil
+	return c, nil
 }
 
 //Teammates which are assigned to the provided Inbox id
@@ -143,16 +120,11 @@ func (s *InboxService) Teammates(inboxID string) (*TeammateList, error) {
 	if err != nil {
 		return nil, err
 	}
+	var t *TeammateList
 
-	resp, err := s.gateway.client.Do(req)
+	_, err = s.gateway.call(req, &t)
 	if err != nil {
 		return nil, err
 	}
-	var i *TeammateList
-	deserialize := serializer.Decode(&i)
-
-	if err := deserialize(resp); err != nil {
-		return i, err
-	}
-	return i, nil
+	return t, nil
 }
